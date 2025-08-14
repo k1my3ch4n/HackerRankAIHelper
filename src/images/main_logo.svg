@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-label="HR AI Helper logo">
+  <!-- Transparent background -->
+  
+  <!-- White regular hexagon (flat top), centered -->
+  <polygon points="16,3 26,9 26,23 16,29 6,23 6,9" fill="#FFFFFF"/>
+  
+  <!-- Bold "H" inside the hexagon -->
+  <rect x="10" y="10" width="3" height="12" fill="#000000"/>
+  <rect x="19" y="10" width="3" height="12" fill="#000000"/>
+  <rect x="10" y="14.5" width="12" height="3" fill="#000000"/>
+  
+  <!-- Green play triangle to the right of the H crossbar -->
+  <polygon points="23,16 20,18 20,14" fill="#01E92C"/>
+</svg>
