@@ -1,4 +1,6 @@
-// todo : Highlight 만들죠?
+// todo : Highlight 만들어서 적용, 하지만 약간 안이쁜거 같기도 하고..
+
+import Highlight from "@/components/Highlight";
 
 const Home = () => {
   return (
@@ -8,14 +10,14 @@ const Home = () => {
           HackerRank AI Helper
         </div>
         <div className="text-3xl pb-[10px] text-gray-500">
-          <span className="text-white">HackerRank</span>의 문제를{" "}
-          <span className="text-white">해석</span>하고{" "}
-          <span className="text-white">요약</span>해주며,
+          <Highlight text="HackerRank" />의 문제를 <Highlight text="해석" />
+          하고 <Highlight text="요약" />
+          해주며,
         </div>
         <div className="text-3xl text-gray-500">
-          <span className="text-white">힌트</span>를 받고{" "}
-          <span className="text-white">풀이</span>에 도움을 주는{" "}
-          <span className="text-white">AI 도구</span>입니다.
+          <Highlight text="힌트" />를 받고 <Highlight text="풀이" />에 도움을
+          주는 <Highlight text="AI 도구" />
+          입니다.
         </div>
       </div>
     </div>
