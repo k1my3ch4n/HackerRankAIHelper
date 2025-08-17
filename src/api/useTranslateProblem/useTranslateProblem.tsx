@@ -5,14 +5,14 @@ import { useState } from "react";
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
 
-const useTranslateProblem = async () => {
+const useTranslateProblem = () => {
   const [translatedTitle, setTranslatedTitle] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const fetchTranslateProblem = async (problemTitle: string) => {
     const prompt = `
-    다음 HackerRank 문제 제목과 설명을 한국어로 번역하고, 핵심 내용을 요약해 주세요.
+    다음 HackerRank 문제 제목과 설명을 한국어로 번역해 주세요.
     문제 제목: ${problemTitle}
   `;
 
