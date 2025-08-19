@@ -1,13 +1,15 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-  theme?: "black" | undefined;
+  theme?: "black" | "main";
 }
 
 const Button = ({ className = "", theme = "black", ...props }: ButtonProps) => {
-  const buttonClassName = "p-[10px] whitespace-nowrap font-semibold";
+  const buttonClassName =
+    "rounded-[10px] p-[10px] whitespace-nowrap font-semibold cursor-pointer";
 
   const buttonTheme = {
-    black: "border border-white rounded-[10px] bg-black",
+    black: "border border-white bg-black hover:bg-gray-700",
+    main: "border border-main bg-main text-black hover:bg-main-hover",
   };
 
   return (
