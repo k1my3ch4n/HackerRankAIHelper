@@ -17,7 +17,7 @@ const NavigateButton = ({
 
   const themeClassName = {
     white: "border border-white bg-white",
-    main: "border border-[#01E92C] bg-[#01E92C]",
+    main: "border border-main bg-main",
   };
 
   const buttonClassName =
