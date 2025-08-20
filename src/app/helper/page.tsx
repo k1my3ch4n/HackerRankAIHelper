@@ -31,8 +31,10 @@ const helperPage = () => {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (problemInputFilter({ problem })) {
-      alert("클릭함");
+    const { isProblem, problemName } = problemInputFilter({ problem });
+
+    if (isProblem) {
+      alert(problemName);
     } else {
       setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
     }
