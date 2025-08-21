@@ -3,7 +3,7 @@
 import useTranslateProblem from "@/api/useTranslateProblem";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
-import { problemInputFilter } from "@/utils/regexUtils/regexUtils";
+import { problemInputFilter } from "@/utils/regexUtils";
 import { useState } from "react";
 
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
@@ -12,10 +12,9 @@ const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-
 const helperPage = () => {
   const [problem, setProblem] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [prompt, setPrompt] = useState<string[]>([]);
 
   const {
-    translatedTitle,
-    summary,
     //  errorMessage,
     fetchTranslateProblem,
   } = useTranslateProblem();
@@ -28,17 +27,16 @@ const helperPage = () => {
     setProblem(value);
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { isProblem, problemName } = problemInputFilter({ problem });
+    const { isValid, problemName } = problemInputFilter({ problem });
 
-    if (isProblem) {
-      alert(problemName);
+    if (isValid) {
+      await fetchTranslateProblem({ problemTitle: problemName, setPrompt });
     } else {
       setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
     }
-    // await fetchTranslateProblem("staircase");
   };
 
   return (
@@ -68,8 +66,8 @@ const helperPage = () => {
         )}
       </form>
 
-      {translatedTitle && <div>제목 : {translatedTitle}</div>}
-      {summary && <div>요약 : {summary}</div>}
+      {prompt &&
+        prompt.map((data, index) => <div key={index}>요약 : {data}</div>)}
       {/* {errorMessage && <div>에러가 발생했습니다. : {errorMessage}</div>} */}
     </div>
   );
