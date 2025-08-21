@@ -13,7 +13,7 @@ export const problemInputFilter = ({ problem }: { problem: string }) => {
   }
 
   return {
-    isProblem: INPUT_REGEX.test(problem),
+    isValid: INPUT_REGEX.test(problem),
     problemName,
   };
 };
