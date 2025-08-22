@@ -6,8 +6,8 @@ import NavigateButton from "@/components/NavigateButton";
 
 const Home = () => {
   return (
-    <div className="flex flex-col items-center my-[80px] px-[24px]">
-      <div className="flex flex-col items-center pt-[64px] px-[24px]">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]">
+      <div className="flex flex-col items-center px-[24px]">
         <div className="text-6xl font-semibold p-[24px]">
           HackerRank AI Helper
         </div>
