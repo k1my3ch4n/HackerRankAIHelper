@@ -1,7 +1,15 @@
+// todo : PromptType 타입 중복
+
 "use client";
 
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+
+interface PromptType {
+  type: "summary" | "hint" | "answer";
+  problemTitle: string;
+  summary: string;
+}
 
 const useTranslateProblem = () => {
   const fetchTranslateProblem = async ({
@@ -11,7 +19,7 @@ const useTranslateProblem = () => {
   }: {
     problemTitle: string;
     type?: "summary" | "hint" | "answer";
-    setPrompt: React.Dispatch<React.SetStateAction<string[]>>;
+    setPrompt: React.Dispatch<React.SetStateAction<PromptType[]>>;
   }) => {
     const prompts = {
       summary: `
@@ -84,7 +92,13 @@ const useTranslateProblem = () => {
 
       const parsedResponse = JSON.parse(geminiResponse);
 
-      setPrompt((prev) => [...prev, parsedResponse.summary]);
+      const newPrompt = {
+        type,
+        problemTitle,
+        summary: parsedResponse.summary,
+      };
+
+      setPrompt((prev) => [...prev, newPrompt]);
     } catch (error) {
       console.error("Gemini API 호출 중 오류:", error);
     }
