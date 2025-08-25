@@ -1,6 +1,4 @@
-// todo : PromptType 타입 중복
 // todo : handleClick 타입 수정
-// todo : translate 라는 이름 수정 예정
 
 "use client";
 
@@ -13,13 +11,13 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 type TypeKey = "summary" | "hint" | "answer";
-interface PromptType {
+interface PromptDataType {
   type: TypeKey;
   problemTitle: string;
   summary: string;
 }
 
-const TYPE_TRANSLATE: Record<TypeKey, string> = {
+const PROMPT_TYPE: Record<TypeKey, string> = {
   summary: "요약",
   hint: "힌트",
   answer: "풀이",
@@ -28,9 +26,9 @@ const TYPE_TRANSLATE: Record<TypeKey, string> = {
 const helperPage = () => {
   const [problem, setProblem] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [prompt, setPrompt] = useState<PromptType[]>([]);
+  const [prompt, setPrompt] = useState<PromptDataType[]>([]);
 
-  const { fetchTranslateProblem } = useGeminiApi();
+  const { fetchGeminiData } = useGeminiApi();
 
   const handleChangeProblem = (value: string) => {
     if (errorMessage) {
@@ -46,16 +44,16 @@ const helperPage = () => {
     const { isValid, problemName } = problemInputFilter({ problem });
 
     if (isValid) {
-      await fetchTranslateProblem({ problemTitle: problemName, setPrompt });
+      await fetchGeminiData({ problemTitle: problemName, setPrompt });
     } else {
       setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
     }
   };
 
-  const handleClickTranslate = async (type: "summary" | "hint" | "answer") => {
+  const handleFetchClick = async (type: "summary" | "hint" | "answer") => {
     const { problemName } = problemInputFilter({ problem });
 
-    await fetchTranslateProblem({ problemTitle: problemName, setPrompt, type });
+    await fetchGeminiData({ problemTitle: problemName, setPrompt, type });
   };
 
   return (
@@ -69,19 +67,19 @@ const helperPage = () => {
               key={index}
             >
               <p className="pb-[10px]">
-                문제 <Highlight text={TYPE_TRANSLATE[type]} /> : {problemTitle}
+                문제 <Highlight text={PROMPT_TYPE[type]} /> : {problemTitle}
               </p>
 
               <ReactMarkdown children={summary} />
 
               <div className="w-full flex pt-[10px] ">
-                {Object.entries(TYPE_TRANSLATE).map(([key, value]) => {
+                {Object.entries(PROMPT_TYPE).map(([key, value]) => {
                   return (
                     <Button
                       key={key}
                       className="grow mr-[10px]"
                       theme="white"
-                      onClick={() => handleClickTranslate(key as TypeKey)}
+                      onClick={() => handleFetchClick(key as TypeKey)}
                     >
                       {key === type ? "다른 " : ""}
                       {value}

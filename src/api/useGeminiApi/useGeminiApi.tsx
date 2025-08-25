@@ -1,25 +1,25 @@
-// todo : PromptType 타입 중복
+// todo : PromptDataType 타입 중복
 
 "use client";
 
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
 
-interface PromptType {
+interface PromptDataType {
   type: "summary" | "hint" | "answer";
   problemTitle: string;
   summary: string;
 }
 
-const useTranslateProblem = () => {
-  const fetchTranslateProblem = async ({
+const useGeminiApi = () => {
+  const fetchGeminiData = async ({
     problemTitle,
     type = "summary",
     setPrompt,
   }: {
     problemTitle: string;
     type?: "summary" | "hint" | "answer";
-    setPrompt: React.Dispatch<React.SetStateAction<PromptType[]>>;
+    setPrompt: React.Dispatch<React.SetStateAction<PromptDataType[]>>;
   }) => {
     const prompts = {
       summary: `
@@ -105,8 +105,8 @@ const useTranslateProblem = () => {
   };
 
   return {
-    fetchTranslateProblem,
+    fetchGeminiData,
   };
 };
 
-export default useTranslateProblem;
+export default useGeminiApi;
