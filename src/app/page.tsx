@@ -2,10 +2,12 @@
 // todo : 페이지 생성시 버튼 분리 및 컴포넌트화
 import Highlight from "@/components/Highlight";
 
+import NavigateButton from "@/components/NavigateButton";
+
 const Home = () => {
   return (
-    <div className="flex flex-col items-center my-[80px] px-[24px]">
-      <div className="flex flex-col items-center pt-[64px] px-[24px]">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]">
+      <div className="flex flex-col items-center px-[24px]">
         <div className="text-6xl font-semibold p-[24px]">
           HackerRank AI Helper
         </div>
@@ -20,12 +22,12 @@ const Home = () => {
           입니다.
         </div>
         <div className="w-full flex justify-center mt-[36px]">
-          <button className="border border-white px-[16px] py-[12px] rounded-xl text-black font-semibold mr-[10px] cursor-pointer bg-white">
-            문제풀러 가기
-          </button>
-          <button className="border border-[#01E92C] px-[16px] py-[12px] rounded-xl text-black font-semibold cursor-pointer bg-[#01E92C]">
-            Github
-          </button>
+          <NavigateButton
+            url="/helper"
+            className="mr-[10px]"
+            text="문제풀러 가기"
+          />
+          <NavigateButton url="/" theme="main" text="Github" />
         </div>
       </div>
     </div>
