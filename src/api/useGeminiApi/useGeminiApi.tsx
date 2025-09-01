@@ -2,6 +2,8 @@
 
 "use client";
 
+import { useState } from "react";
+
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
 
@@ -12,6 +14,8 @@ interface PromptDataType {
 }
 
 const useGeminiApi = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const fetchGeminiData = async ({
     problemTitle,
     type = "summary",
@@ -73,6 +77,8 @@ const useGeminiApi = () => {
     };
 
     try {
+      setIsLoading(true);
+
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,11 +107,14 @@ const useGeminiApi = () => {
       setPrompt((prev) => [...prev, newPrompt]);
     } catch (error) {
       console.error("Gemini API 호출 중 오류:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return {
     fetchGeminiData,
+    isLoading,
   };
 };
 
