@@ -1,12 +1,13 @@
 // todo : prompt 임시 제거
 // todo : problem << 전역 상태로
+// todo : 맨 처음 로딩 시, 스피너 표현하고 싶음
 
 "use client";
 
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 
 import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
@@ -32,7 +33,7 @@ const helperPage = () => {
   const [problem, setProblem] = useState<string>("");
   const [prompt, setPrompt] = useState<PromptDataType[]>([]);
 
-  const { fetchGeminiData } = useGeminiApi();
+  const { fetchGeminiData, isLoading } = useGeminiApi();
 
   const { isToggle, handleToggle } = useToggle(false);
 
@@ -42,12 +43,31 @@ const helperPage = () => {
     await fetchGeminiData({ problemTitle: problemName, setPrompt, type });
   };
 
+  console.log(isLoading);
+
+  const isInitialView = prompt.length === 0;
+  const isPrompt = prompt.length > 0;
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]">
-      {prompt.length > 0 ? (
+      {isInitialView && (
+        <>
+          <p className="font-medium text-4xl my-[20px]">
+            어떤 <Highlight text="문제" />를 도와드릴까요 ?
+          </p>
+          <QuestionForm
+            question={problem}
+            setQuestion={setProblem}
+            setPrompt={setPrompt}
+            questionRef={questionNameRef}
+          />
+        </>
+      )}
+
+      {isPrompt &&
         prompt.map(({ type, summary, problemTitle }, index) => {
           return (
-            <>
+            <Fragment key={index}>
               <div className="w-1/2 p-[20px] mt-[10px] border border-gray-800 rounded-xl bg-gray-800">
                 <p className="pb-[10px]">
                   문제 <Highlight text={PROMPT_TYPE[type]} /> : {problemTitle}
@@ -55,7 +75,7 @@ const helperPage = () => {
 
                 <ReactMarkdown children={summary} />
 
-                {index === prompt.length - 1 && (
+                {index === prompt.length - 1 && !isLoading && (
                   <>
                     <div className="w-full flex pt-[10px] ">
                       {Object.entries(PROMPT_TYPE).map(([key, value]) => {
@@ -91,21 +111,14 @@ const helperPage = () => {
                   questionRef={questionNameRef}
                 />
               )}
-            </>
+            </Fragment>
           );
-        })
-      ) : (
-        <>
-          <p className="font-medium text-4xl my-[20px]">
-            어떤 <Highlight text="문제" />를 도와드릴까요 ?
-          </p>
-          <QuestionForm
-            question={problem}
-            setQuestion={setProblem}
-            setPrompt={setPrompt}
-            questionRef={questionNameRef}
-          />
-        </>
+        })}
+
+      {isLoading && (
+        <div className="w-1/2 p-[20px] mt-[10px] border border-gray-800 rounded-xl bg-gray-800">
+          <p className="pb-[10px]">Gemini 에게 물어보는중 ..</p>
+        </div>
       )}
     </div>
   );
