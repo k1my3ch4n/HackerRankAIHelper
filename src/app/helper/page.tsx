@@ -37,15 +37,15 @@ const helperPage = () => {
 
   const { isToggle, handleToggle } = useToggle(false);
 
-  const handleFetchClick = async (type: "summary" | "hint" | "answer") => {
+  const handleFetchClick = (type: "summary" | "hint" | "answer") => {
     const problemName = questionNameRef.current;
 
-    await fetchGeminiData({ problemTitle: problemName, setPrompt, type });
+    fetchGeminiData({ problemTitle: problemName, setPrompt, type });
   };
 
   console.log(isLoading);
 
-  const isInitialView = prompt.length === 0;
+  const isInitialView = prompt.length === 0 && !isLoading;
   const isPrompt = prompt.length > 0;
 
   return (

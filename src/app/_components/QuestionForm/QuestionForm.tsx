@@ -34,7 +34,7 @@ const QuestionForm = ({
     setQuestion(value);
   };
 
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { isValid, problemName } = problemInputFilter({ problem: question });
@@ -42,7 +42,7 @@ const QuestionForm = ({
     if (isValid) {
       questionRef.current = problemName;
 
-      await fetchGeminiData({ problemTitle: problemName, setPrompt });
+      fetchGeminiData({ problemTitle: problemName, setPrompt });
     } else {
       setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
     }

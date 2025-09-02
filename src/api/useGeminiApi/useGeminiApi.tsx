@@ -25,6 +25,8 @@ const useGeminiApi = () => {
     type?: "summary" | "hint" | "answer";
     setPrompt: React.Dispatch<React.SetStateAction<PromptDataType[]>>;
   }) => {
+    setIsLoading(true);
+
     const prompts = {
       summary: `
         너는 이제부터 프로그래밍 문제를 분석하고 번역하는 전문가야.
@@ -77,8 +79,6 @@ const useGeminiApi = () => {
     };
 
     try {
-      setIsLoading(true);
-
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
