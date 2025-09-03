@@ -2,26 +2,18 @@
 
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
-import { problemInputFilter } from "@/utils/regexUtils";
+import useQuestionInput from "@/stores/questionInput";
+import { questionInputFilter } from "@/utils/regexUtils";
 import { useState } from "react";
 
-interface PromptDataType {
-  type: "summary" | "hint" | "answer";
-  problemTitle: string;
-  summary: string;
-}
-
 const QuestionForm = ({
-  question,
-  setQuestion,
-  setPrompt,
   questionRef,
 }: {
-  question: string;
-  setQuestion: React.Dispatch<React.SetStateAction<string>>;
-  setPrompt: React.Dispatch<React.SetStateAction<PromptDataType[]>>;
   questionRef: React.RefObject<string>;
 }) => {
+  const questionInput = useQuestionInput((state) => state.questionInput);
+  const setQuestionInput = useQuestionInput((state) => state.setQuestionInput);
+
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const { fetchGeminiData } = useGeminiApi();
@@ -31,18 +23,20 @@ const QuestionForm = ({
       setErrorMessage("");
     }
 
-    setQuestion(value);
+    setQuestionInput(value);
   };
 
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { isValid, problemName } = problemInputFilter({ problem: question });
+    const { isValid, questionName } = questionInputFilter({
+      questionInput,
+    });
 
     if (isValid) {
-      questionRef.current = problemName;
+      questionRef.current = questionName;
 
-      await fetchGeminiData({ problemTitle: problemName, setPrompt });
+      fetchGeminiData({ questionName });
     } else {
       setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
     }
@@ -58,7 +52,7 @@ const QuestionForm = ({
       <div className="flex w-full">
         <input
           className="w-full text-white focus:outline-hidden "
-          value={question}
+          value={questionInput}
           placeholder="문제 URL 또는 문제 이름을 입력하세요."
           onChange={(e) => handleChangeQuestion(e.target.value)}
         />
