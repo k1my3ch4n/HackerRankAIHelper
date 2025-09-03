@@ -3,17 +3,21 @@ const INPUT_REGEX =
 
 const START_URL = "https://www.hackerrank.com/challenges/";
 
-export const problemInputFilter = ({ problem }: { problem: string }) => {
-  let problemName = problem;
+export const questionInputFilter = ({
+  questionInput,
+}: {
+  questionInput: string;
+}) => {
+  let questionName = questionInput;
 
-  if (problem.startsWith(START_URL)) {
-    const splitUrl = problem.split("/");
+  if (questionInput.startsWith(START_URL)) {
+    const splitUrl = questionInput.split("/");
 
-    problemName = splitUrl[4].replace(/-/g, " ");
+    questionName = splitUrl[4].replace(/-/g, " ");
   }
 
   return {
-    isValid: INPUT_REGEX.test(problem),
-    problemName,
+    isValid: INPUT_REGEX.test(questionInput),
+    questionName,
   };
 };

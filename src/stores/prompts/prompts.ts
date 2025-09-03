@@ -4,7 +4,7 @@ type TypeKey = "summary" | "hint" | "answer";
 
 interface PromptDataType {
   type: TypeKey;
-  problemTitle: string;
+  questionTitle: string;
   summary: string;
 }
 

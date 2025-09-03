@@ -3,7 +3,7 @@
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import useQuestionInput from "@/stores/questionInput";
-import { problemInputFilter } from "@/utils/regexUtils";
+import { questionInputFilter } from "@/utils/regexUtils";
 import { useState } from "react";
 
 const QuestionForm = ({
@@ -29,14 +29,14 @@ const QuestionForm = ({
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { isValid, problemName } = problemInputFilter({
-      problem: questionInput,
+    const { isValid, questionName } = questionInputFilter({
+      questionInput,
     });
 
     if (isValid) {
-      questionRef.current = problemName;
+      questionRef.current = questionName;
 
-      fetchGeminiData({ problemTitle: problemName });
+      fetchGeminiData({ questionTitle: questionName });
     } else {
       setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
     }
