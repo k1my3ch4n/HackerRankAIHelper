@@ -36,7 +36,7 @@ const QuestionForm = ({
     if (isValid) {
       questionRef.current = questionName;
 
-      fetchGeminiData({ questionTitle: questionName });
+      fetchGeminiData({ questionName });
     } else {
       setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
     }

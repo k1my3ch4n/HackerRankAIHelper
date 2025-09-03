@@ -96,7 +96,7 @@ const helperPage = () => {
 
       {isLoading && (
         <div className="w-1/2 p-[20px] mt-[10px] border border-gray-800 rounded-xl bg-gray-800">
-          <p className="pb-[10px]">Gemini 에게 물어보는중 ..</p>
+          <p className="p-[10px]">Gemini 에게 물어보는중 ..</p>
         </div>
       )}
     </div>
