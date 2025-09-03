@@ -4,7 +4,7 @@ export type TypeKey = "summary" | "hint" | "answer";
 
 interface PromptDataType {
   type: TypeKey;
-  questionTitle: string;
+  questionName: string;
   summary: string;
 }
 

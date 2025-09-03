@@ -11,10 +11,10 @@ const useGeminiApi = () => {
   const setPrompts = usePrompts((state) => state.setPrompts);
 
   const fetchGeminiData = async ({
-    questionTitle,
+    questionName,
     type = "summary",
   }: {
-    questionTitle: string;
+    questionName: string;
     type?: "summary" | "hint" | "answer";
   }) => {
     setIsLoading(true);
@@ -30,7 +30,7 @@ const useGeminiApi = () => {
         3.  **문제 내용 요약**: 번역된 내용을 바탕으로 문제의 핵심 요구사항을 간결하게 요약해 줘. 이 요약에는 풀이 방법, 힌트, 또는 답이 될 수 있는 어떤 내용도 포함하면 안 돼. 오직 문제의 목표만 요약해야 해.
 
         ---
-        문제: ${questionTitle}
+        문제: ${questionName}
       `,
       hint: `
         너는 이제부터 프로그래밍 문제 해결을 도와주는 멘토야.
@@ -41,7 +41,7 @@ const useGeminiApi = () => {
         2.  **핵심 알고리즘**: 이 문제를 해결하는 데 가장 효과적인 알고리즘이나 자료구조를 제시하고, 그 개념에 대해 간결하게 설명해 줘.
 
         ---
-        문제: ${questionTitle}
+        문제: ${questionName}
       `,
       answer: `
         너는 이제부터 프로그래밍 문제의 모범 답안을 제시하는 전문가야.
@@ -52,7 +52,7 @@ const useGeminiApi = () => {
         2.  **코드 설명**: 작성된 코드의 로직과 핵심 원리에 대해 간결하고 이해하기 쉽게 설명해 줘.
 
         ---
-        문제: ${questionTitle}
+        문제: ${questionName}
       `,
     };
 
@@ -92,7 +92,7 @@ const useGeminiApi = () => {
 
       const newPrompt = {
         type,
-        questionTitle,
+        questionName,
         summary: parsedResponse.summary,
       };
 

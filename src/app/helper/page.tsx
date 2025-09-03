@@ -31,7 +31,7 @@ const helperPage = () => {
   const handleFetchClick = (type: TypeKey) => {
     const questionName = questionNameRef.current;
 
-    fetchGeminiData({ questionTitle: questionName, type });
+    fetchGeminiData({ questionName, type });
   };
 
   const isInitialView = prompts.length === 0 && !isLoading;
@@ -49,12 +49,12 @@ const helperPage = () => {
       )}
 
       {isPrompts &&
-        prompts.map(({ type, summary, questionTitle }, index) => {
+        prompts.map(({ type, summary, questionName }, index) => {
           return (
             <Fragment key={index}>
               <div className="w-1/2 p-[20px] mt-[10px] border border-gray-800 rounded-xl bg-gray-800">
                 <p className="pb-[10px]">
-                  문제 <Highlight text={PROMPT_TYPE[type]} /> : {questionTitle}
+                  문제 <Highlight text={PROMPT_TYPE[type]} /> : {questionName}
                 </p>
 
                 <ReactMarkdown children={summary} />
