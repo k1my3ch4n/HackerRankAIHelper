@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type TypeKey = "summary" | "hint" | "answer";
+export type TypeKey = "summary" | "hint" | "answer";
 
 interface PromptDataType {
   type: TypeKey;

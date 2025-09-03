@@ -9,10 +9,8 @@ import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
 
 import ReactMarkdown from "react-markdown";
-import usePrompts from "@/stores/prompts";
+import usePrompts, { TypeKey } from "@/stores/prompts";
 import useIsLoading from "@/stores/isLoading";
-
-type TypeKey = "summary" | "hint" | "answer";
 
 const PROMPT_TYPE: Record<TypeKey, string> = {
   summary: "요약",
@@ -30,7 +28,7 @@ const helperPage = () => {
 
   const { isToggle, handleToggle } = useToggle(false);
 
-  const handleFetchClick = (type: "summary" | "hint" | "answer") => {
+  const handleFetchClick = (type: TypeKey) => {
     const questionName = questionNameRef.current;
 
     fetchGeminiData({ questionTitle: questionName, type });
