@@ -1,5 +1,3 @@
-// todo : prompt 임시 제거
-// todo : problem << 전역 상태로
 // todo : 맨 처음 로딩 시, 스피너 표현하고 싶음
 
 "use client";
@@ -7,19 +5,16 @@
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
 
 import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
 
 import ReactMarkdown from "react-markdown";
+import usePrompts from "@/stores/prompts";
+import useIsLoading from "@/stores/isLoading";
 
 type TypeKey = "summary" | "hint" | "answer";
-interface PromptDataType {
-  type: TypeKey;
-  problemTitle: string;
-  summary: string;
-}
 
 const PROMPT_TYPE: Record<TypeKey, string> = {
   summary: "요약",
@@ -30,23 +25,21 @@ const PROMPT_TYPE: Record<TypeKey, string> = {
 const helperPage = () => {
   const questionNameRef = useRef("");
 
-  const [problem, setProblem] = useState<string>("");
-  const [prompt, setPrompt] = useState<PromptDataType[]>([]);
+  const prompts = usePrompts((state) => state.prompts);
+  const isLoading = useIsLoading((state) => state.isLoading);
 
-  const { fetchGeminiData, isLoading } = useGeminiApi();
+  const { fetchGeminiData } = useGeminiApi();
 
   const { isToggle, handleToggle } = useToggle(false);
 
   const handleFetchClick = (type: "summary" | "hint" | "answer") => {
-    const problemName = questionNameRef.current;
+    const questionName = questionNameRef.current;
 
-    fetchGeminiData({ problemTitle: problemName, setPrompt, type });
+    fetchGeminiData({ problemTitle: questionName, type });
   };
 
-  console.log(isLoading);
-
-  const isInitialView = prompt.length === 0 && !isLoading;
-  const isPrompt = prompt.length > 0;
+  const isInitialView = prompts.length === 0 && !isLoading;
+  const isPrompts = prompts.length > 0;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]">
@@ -55,17 +48,12 @@ const helperPage = () => {
           <p className="font-medium text-4xl my-[20px]">
             어떤 <Highlight text="문제" />를 도와드릴까요 ?
           </p>
-          <QuestionForm
-            question={problem}
-            setQuestion={setProblem}
-            setPrompt={setPrompt}
-            questionRef={questionNameRef}
-          />
+          <QuestionForm questionRef={questionNameRef} />
         </>
       )}
 
-      {isPrompt &&
-        prompt.map(({ type, summary, problemTitle }, index) => {
+      {isPrompts &&
+        prompts.map(({ type, summary, problemTitle }, index) => {
           return (
             <Fragment key={index}>
               <div className="w-1/2 p-[20px] mt-[10px] border border-gray-800 rounded-xl bg-gray-800">
@@ -75,7 +63,7 @@ const helperPage = () => {
 
                 <ReactMarkdown children={summary} />
 
-                {index === prompt.length - 1 && !isLoading && (
+                {index === prompts.length - 1 && !isLoading && (
                   <>
                     <div className="w-full flex pt-[10px] ">
                       {Object.entries(PROMPT_TYPE).map(([key, value]) => {
@@ -103,13 +91,8 @@ const helperPage = () => {
                   </>
                 )}
               </div>
-              {index === prompt.length - 1 && isToggle && (
-                <QuestionForm
-                  question={problem}
-                  setQuestion={setProblem}
-                  setPrompt={setPrompt}
-                  questionRef={questionNameRef}
-                />
+              {index === prompts.length - 1 && isToggle && (
+                <QuestionForm questionRef={questionNameRef} />
               )}
             </Fragment>
           );

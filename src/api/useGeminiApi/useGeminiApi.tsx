@@ -1,29 +1,21 @@
-// todo : PromptDataType 타입 중복
-
 "use client";
 
-import { useState } from "react";
+import useIsLoading from "@/stores/isLoading";
+import usePrompts from "@/stores/prompts";
 
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
 
-interface PromptDataType {
-  type: "summary" | "hint" | "answer";
-  problemTitle: string;
-  summary: string;
-}
-
 const useGeminiApi = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const setIsLoading = useIsLoading((state) => state.setIsLoading);
+  const setPrompts = usePrompts((state) => state.setPrompts);
 
   const fetchGeminiData = async ({
     problemTitle,
     type = "summary",
-    setPrompt,
   }: {
     problemTitle: string;
     type?: "summary" | "hint" | "answer";
-    setPrompt: React.Dispatch<React.SetStateAction<PromptDataType[]>>;
   }) => {
     setIsLoading(true);
 
@@ -104,7 +96,7 @@ const useGeminiApi = () => {
         summary: parsedResponse.summary,
       };
 
-      setPrompt((prev) => [...prev, newPrompt]);
+      setPrompts(newPrompt);
     } catch (error) {
       console.error("Gemini API 호출 중 오류:", error);
     } finally {
@@ -112,10 +104,7 @@ const useGeminiApi = () => {
     }
   };
 
-  return {
-    fetchGeminiData,
-    isLoading,
-  };
+  return { fetchGeminiData };
 };
 
 export default useGeminiApi;
