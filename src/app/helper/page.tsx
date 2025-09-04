@@ -3,7 +3,7 @@
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
-import { Fragment, useRef } from "react";
+import { Fragment } from "react";
 
 import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
@@ -11,6 +11,7 @@ import useToggle from "@/hooks/useToggle";
 import ReactMarkdown from "react-markdown";
 import usePrompts, { TypeKey } from "@/stores/prompts";
 import useIsLoading from "@/stores/isLoading";
+import useQuestionName from "@/stores/questionName";
 
 const PROMPT_TYPE: Record<TypeKey, string> = {
   summary: "요약",
@@ -19,7 +20,7 @@ const PROMPT_TYPE: Record<TypeKey, string> = {
 };
 
 const helperPage = () => {
-  const questionNameRef = useRef("");
+  const questionName = useQuestionName((state) => state.questionName);
 
   const prompts = usePrompts((state) => state.prompts);
   const isLoading = useIsLoading((state) => state.isLoading);
@@ -29,9 +30,7 @@ const helperPage = () => {
   const { isToggle, handleToggle } = useToggle(false);
 
   const handleFetchClick = (type: TypeKey) => {
-    const questionName = questionNameRef.current;
-
-    fetchGeminiData({ questionName, type });
+    fetchGeminiData({ questionName: questionName, type });
   };
 
   const isInitialView = prompts.length === 0 && !isLoading;
@@ -44,7 +43,7 @@ const helperPage = () => {
           <p className="font-medium text-4xl my-[20px]">
             어떤 <Highlight text="문제" />를 도와드릴까요 ?
           </p>
-          <QuestionForm questionRef={questionNameRef} />
+          <QuestionForm />
         </>
       )}
 
@@ -87,9 +86,7 @@ const helperPage = () => {
                   </>
                 )}
               </div>
-              {index === prompts.length - 1 && isToggle && (
-                <QuestionForm questionRef={questionNameRef} />
-              )}
+              {index === prompts.length - 1 && isToggle && <QuestionForm />}
             </Fragment>
           );
         })}
