@@ -30,7 +30,7 @@ const QuestionForm = () => {
     });
 
     if (isValid) {
-      setQuestionName(questionInput);
+      setQuestionName(questionName);
 
       fetchGeminiData({ questionName });
     } else {
