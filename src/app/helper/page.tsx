@@ -8,10 +8,10 @@ import { Fragment } from "react";
 import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
 
-import ReactMarkdown from "react-markdown";
 import usePrompts, { TypeKey } from "@/stores/prompts";
 import useIsLoading from "@/stores/isLoading";
 import useQuestionName from "@/stores/questionName";
+import MarkdownWrapper from "@/components/MarkdownWrapper";
 
 const PROMPT_TYPE: Record<TypeKey, string> = {
   summary: "요약",
@@ -56,7 +56,7 @@ const helperPage = () => {
                   문제 <Highlight text={PROMPT_TYPE[type]} /> : {questionName}
                 </p>
 
-                <ReactMarkdown children={summary} />
+                <MarkdownWrapper children={summary} />
 
                 {index === prompts.length - 1 && !isLoading && (
                   <>
