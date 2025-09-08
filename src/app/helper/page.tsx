@@ -52,7 +52,7 @@ const helperPage = () => {
           return (
             <Fragment key={index}>
               <div className="w-1/2 p-[20px] mt-[20px] border border-gray-800 rounded-xl bg-gray-800">
-                <p className="pb-[10px]">
+                <p className="pb-[10px] text-xl">
                   문제 <Highlight text={PROMPT_TYPE[type]} /> : {questionName}
                 </p>
 

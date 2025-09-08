@@ -24,6 +24,37 @@ const MarkdownWrapper = ({ children }: { children: string }) => {
         {children}
       </li>
     ),
+    code: ({ className, children, ...props }) => {
+      const match = /language-(\w+)/.exec(className || "");
+      const isMultiLine = String(children).includes("\n");
+
+      if ((match || isMultiLine) && match !== null) {
+        return (
+          <div className="mb-6">
+            <div className="bg-gray-900 text-gray-100 rounded-lg overflow-hidden shadow-lg border border-gray-700">
+              <div className="bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 border-b border-gray-600 flex items-center justify-between">
+                <span className="uppercase tracking-wide">{match[1]}</span>
+                <span className="text-xs text-gray-400">코드</span>
+              </div>
+              <pre className="p-4 overflow-x-auto">
+                <code className="text-sm font-mono leading-relaxed" {...props}>
+                  {String(children).replace(/\n$/, "")}
+                </code>
+              </pre>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <code
+          className="bg-main text-black px-1.5 py-0.5 rounded text-sm font-mono border border-main font-semibold inline whitespace-nowrap"
+          {...props}
+        >
+          {children}
+        </code>
+      );
+    },
   };
 
   return <ReactMarkdown components={components}>{children}</ReactMarkdown>;
