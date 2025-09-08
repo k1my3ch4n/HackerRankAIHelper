@@ -51,7 +51,7 @@ const helperPage = () => {
         prompts.map(({ type, summary, questionName }, index) => {
           return (
             <Fragment key={index}>
-              <div className="w-1/2 p-[20px] mt-[10px] border border-gray-800 rounded-xl bg-gray-800">
+              <div className="w-1/2 p-[20px] mt-[20px] border border-gray-800 rounded-xl bg-gray-800">
                 <p className="pb-[10px]">
                   문제 <Highlight text={PROMPT_TYPE[type]} /> : {questionName}
                 </p>
