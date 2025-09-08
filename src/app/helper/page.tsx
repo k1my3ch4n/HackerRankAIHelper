@@ -3,14 +3,15 @@
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
-import { Fragment, useRef } from "react";
+import { Fragment } from "react";
 
 import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
 
-import ReactMarkdown from "react-markdown";
 import usePrompts, { TypeKey } from "@/stores/prompts";
 import useIsLoading from "@/stores/isLoading";
+import useQuestionName from "@/stores/questionName";
+import MarkdownWrapper from "@/components/MarkdownWrapper";
 
 const PROMPT_TYPE: Record<TypeKey, string> = {
   summary: "요약",
@@ -19,7 +20,7 @@ const PROMPT_TYPE: Record<TypeKey, string> = {
 };
 
 const helperPage = () => {
-  const questionNameRef = useRef("");
+  const questionName = useQuestionName((state) => state.questionName);
 
   const prompts = usePrompts((state) => state.prompts);
   const isLoading = useIsLoading((state) => state.isLoading);
@@ -29,9 +30,7 @@ const helperPage = () => {
   const { isToggle, handleToggle } = useToggle(false);
 
   const handleFetchClick = (type: TypeKey) => {
-    const questionName = questionNameRef.current;
-
-    fetchGeminiData({ questionName, type });
+    fetchGeminiData({ questionName: questionName, type });
   };
 
   const isInitialView = prompts.length === 0 && !isLoading;
@@ -44,7 +43,7 @@ const helperPage = () => {
           <p className="font-medium text-4xl my-[20px]">
             어떤 <Highlight text="문제" />를 도와드릴까요 ?
           </p>
-          <QuestionForm questionRef={questionNameRef} />
+          <QuestionForm />
         </>
       )}
 
@@ -52,12 +51,12 @@ const helperPage = () => {
         prompts.map(({ type, summary, questionName }, index) => {
           return (
             <Fragment key={index}>
-              <div className="w-1/2 p-[20px] mt-[10px] border border-gray-800 rounded-xl bg-gray-800">
-                <p className="pb-[10px]">
+              <div className="w-1/2 p-[20px] my-[20px] border border-gray-800 rounded-xl bg-gray-800">
+                <p className="pb-[10px] text-xl">
                   문제 <Highlight text={PROMPT_TYPE[type]} /> : {questionName}
                 </p>
 
-                <ReactMarkdown children={summary} />
+                <MarkdownWrapper children={summary} />
 
                 {index === prompts.length - 1 && !isLoading && (
                   <>
@@ -87,15 +86,13 @@ const helperPage = () => {
                   </>
                 )}
               </div>
-              {index === prompts.length - 1 && isToggle && (
-                <QuestionForm questionRef={questionNameRef} />
-              )}
+              {index === prompts.length - 1 && isToggle && <QuestionForm />}
             </Fragment>
           );
         })}
 
       {isLoading && (
-        <div className="w-1/2 p-[20px] mt-[10px] border border-gray-800 rounded-xl bg-gray-800">
+        <div className="w-1/2 p-[20px] my-[20px] border border-gray-800 rounded-xl bg-gray-800">
           <p className="p-[10px]">Gemini 에게 물어보는중 ..</p>
         </div>
       )}

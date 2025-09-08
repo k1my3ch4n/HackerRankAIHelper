@@ -2,18 +2,14 @@
 
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
-import useQuestionInput from "@/stores/questionInput";
+import useQuestionName from "@/stores/questionName";
 import { questionInputFilter } from "@/utils/regexUtils";
 import { useState } from "react";
 
-const QuestionForm = ({
-  questionRef,
-}: {
-  questionRef: React.RefObject<string>;
-}) => {
-  const questionInput = useQuestionInput((state) => state.questionInput);
-  const setQuestionInput = useQuestionInput((state) => state.setQuestionInput);
+const QuestionForm = () => {
+  const setQuestionName = useQuestionName((state) => state.setQuestionName);
 
+  const [questionInput, setQuestionInput] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const { fetchGeminiData } = useGeminiApi();
@@ -34,7 +30,7 @@ const QuestionForm = ({
     });
 
     if (isValid) {
-      questionRef.current = questionName;
+      setQuestionName(questionName);
 
       fetchGeminiData({ questionName });
     } else {
