@@ -9,8 +9,18 @@ const useToggle = (initialToggle = false) => {
     setIsToggle((prev) => !prev);
   };
 
+  const handleOn = () => {
+    setIsToggle(true);
+  };
+
+  const handleOff = () => {
+    setIsToggle(false);
+  };
+
   return {
     isToggle,
+    handleOn,
+    handleOff,
     handleToggle,
   };
 };
