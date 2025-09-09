@@ -29,7 +29,7 @@ const useGeminiApi = () => {
         
         위 hackerrank 페이지의 문제에 대해서 다음 마크다운 형식으로 응답해 줘 :
         
-        # 문제 요약 결과
+        # 문제 요약 결과 : ${questionName} 
 
         ## 문제 내용 요약
         (요약된 핵심 요구 사항)        
@@ -43,7 +43,7 @@ const useGeminiApi = () => {
 
         위 hackerrank 페이지의 문제에 대해서 직접적인 답을 제공하지 말고, 다음 마크다운 형식으로 응답해 줘 :
 
-        # 문제 해결 힌트
+        # 문제 해결 힌트 : ${questionName} 
 
         ## 1. 문제 해결 힌트
         (단계별 힌트 내용)
@@ -60,7 +60,7 @@ const useGeminiApi = () => {
 
         위 hackerrank 페이지의 문제에 대해서 다음 마크다운 형식으로 응답해 줘 :
 
-        # 문제 풀이
+        # 문제 풀이 : ${questionName} 
 
         ## 1. 문제 풀이 코드
         (자바스크립트 코드 블록)
