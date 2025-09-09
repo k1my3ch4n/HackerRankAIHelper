@@ -27,9 +27,10 @@ const helperPage = () => {
 
   const { fetchGeminiData } = useGeminiApi();
 
-  const { isToggle, handleToggle } = useToggle(false);
+  const { isToggle, handleToggle, handleOff } = useToggle(false);
 
   const handleFetchClick = (type: TypeKey) => {
+    handleOff();
     fetchGeminiData({ questionName: questionName, type });
   };
 
@@ -43,19 +44,15 @@ const helperPage = () => {
           <p className="font-medium text-4xl my-[20px]">
             어떤 <Highlight text="문제" />를 도와드릴까요 ?
           </p>
-          <QuestionForm />
+          <QuestionForm handleOff={handleOff} />
         </>
       )}
 
       {isPrompts &&
-        prompts.map(({ type, summary, questionName }, index) => {
+        prompts.map(({ type, summary }, index) => {
           return (
             <Fragment key={index}>
               <div className="w-1/2 p-[20px] my-[20px] border border-gray-800 rounded-xl bg-gray-800">
-                <p className="pb-[10px] text-xl">
-                  문제 <Highlight text={PROMPT_TYPE[type]} /> : {questionName}
-                </p>
-
                 <MarkdownWrapper children={summary} />
 
                 {index === prompts.length - 1 && !isLoading && (
@@ -86,7 +83,9 @@ const helperPage = () => {
                   </>
                 )}
               </div>
-              {index === prompts.length - 1 && isToggle && <QuestionForm />}
+              {index === prompts.length - 1 && isToggle && (
+                <QuestionForm handleOff={handleOff} />
+              )}
             </Fragment>
           );
         })}
