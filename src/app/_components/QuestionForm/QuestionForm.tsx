@@ -6,7 +6,7 @@ import useQuestionName from "@/stores/questionName";
 import { questionInputFilter } from "@/utils/regexUtils";
 import { useState } from "react";
 
-const QuestionForm = () => {
+const QuestionForm = ({ handleOff }: { handleOff: () => void }) => {
   const setQuestionName = useQuestionName((state) => state.setQuestionName);
 
   const [questionInput, setQuestionInput] = useState<string>("");
@@ -30,6 +30,7 @@ const QuestionForm = () => {
     });
 
     if (isValid) {
+      handleOff();
       setQuestionName(questionName);
 
       fetchGeminiData({ questionName });
@@ -40,7 +41,7 @@ const QuestionForm = () => {
 
   return (
     <form
-      className={`w-1/2 flex mx-[20px] px-[16px] py-[12px] rounded-xl relative border border-gray-800 ${
+      className={`w-1/2 flex m-[20px] px-[16px] py-[12px] rounded-xl relative border border-gray-800 ${
         errorMessage ? "border-red-400" : "bg-gray-800 "
       }`}
       onSubmit={(e) => handleFormSubmit(e)}
