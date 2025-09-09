@@ -41,8 +41,8 @@ const QuestionForm = ({ handleOff }: { handleOff: () => void }) => {
 
   return (
     <form
-      className={`w-1/2 flex m-[20px] px-[16px] py-[12px] rounded-xl relative border border-gray-800 ${
-        errorMessage ? "border-red-400" : "bg-gray-800 "
+      className={`w-1/2 flex m-[20px] px-[16px] py-[12px] rounded-xl relative border bg-gray-800 ${
+        errorMessage ? "border-red-400" : "border-gray-800"
       }`}
       onSubmit={(e) => handleFormSubmit(e)}
     >
