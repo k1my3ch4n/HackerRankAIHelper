@@ -48,7 +48,7 @@ const MarkdownWrapper = ({ children }: { children: string }) => {
 
       return (
         <code
-          className="bg-main text-black px-1.5 py-0.5 rounded text-sm font-mono border border-main font-semibold inline whitespace-nowrap"
+          className="bg-white text-black px-1.5 py-0.5 rounded text-sm font-mono border border-main font-semibold inline whitespace-nowrap"
           {...props}
         >
           {children}
