@@ -19,7 +19,7 @@ const PROMPT_TYPE: Record<TypeKey, string> = {
   answer: "풀이",
 };
 
-const helperPage = () => {
+const HelperPage = () => {
   const questionName = useQuestionName((state) => state.questionName);
 
   const prompts = usePrompts((state) => state.prompts);
@@ -53,7 +53,7 @@ const helperPage = () => {
           return (
             <Fragment key={index}>
               <div className="w-1/2 p-[20px] my-[20px] border border-gray-800 rounded-xl bg-gray-800">
-                <MarkdownWrapper children={summary} />
+                <MarkdownWrapper>{summary}</MarkdownWrapper>
 
                 {index === prompts.length - 1 && !isLoading && (
                   <>
@@ -99,4 +99,4 @@ const helperPage = () => {
   );
 };
 
-export default helperPage;
+export default HelperPage;
