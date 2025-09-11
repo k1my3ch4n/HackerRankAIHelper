@@ -22,16 +22,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      #   - name: Auto Deploy
-      #     id: auto_deploy
-      #     uses: ./.github/actions/auto_deploy
-      #     with:
-      #       package: "blog"
-      #       gcp_region: ${{ secrets.GCP_REGION }}
-      #       gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-      #       gcp_service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-      #       server_uri: ${{ secrets.NEXT_PUBLIC_SERVER_URI }}
-      #       x-api-key: ${{secrets.NEXT_PUBLIC_VALIDATED_API_KEY}}
+      - name: Auto Deploy
+        id: auto_deploy
+        uses: ./.github/actions/auto_deploy
+        with:
+          gcp_region: ${{ secrets.GCP_REGION }}
+          gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
+          gcp_service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+          gemini_api_key: ${{ secrets.NEXT_PUBLIC_GEMINI_API_KEY }}
 
       - name: Upload Log File
         if: failure()
