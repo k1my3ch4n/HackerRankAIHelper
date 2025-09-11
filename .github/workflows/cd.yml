@@ -1,0 +1,41 @@
+# ! build 체크 및 배포
+
+name: cd
+
+on:
+  push:
+    branches:
+      - "main"
+
+env:
+  NEXT_PUBLIC_GEMINI_API_KEY: ${{secrets.NEXT_PUBLIC_GEMINI_API_KEY}}
+
+jobs:
+  integration:
+    name: integration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: git_checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Auto Deploy
+        id: auto_deploy
+        uses: ./.github/actions/auto_deploy
+        with:
+          gcp_region: ${{ secrets.GCP_REGION }}
+          gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
+          gcp_service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+          gemini_api_key: ${{ secrets.NEXT_PUBLIC_GEMINI_API_KEY }}
+
+      - name: Upload Log File
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workflow_logs
+          path: log_${{ github.run_id }}.txt
+          if-no-files-found: error
+          retention-days: 1
