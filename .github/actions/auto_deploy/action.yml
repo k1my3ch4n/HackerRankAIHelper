@@ -1,18 +1,14 @@
 name: auto_deploy
 
 inputs:
-  package:
-    required: true
   gcp_region:
     required: true
   gcp_project_id:
     required: true
   gcp_service_account_key:
     required: true
-  server_uri:
+  gemini_api_key:
     required: true
-  x-api-key:
-    required: false
 
 runs:
   using: composite
@@ -36,12 +32,11 @@ runs:
     - name: Docker Build and Push Image
       id: docker_build_and_push_image
       run: |
-        IMAGE_NAME="${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/monorepo-${{inputs.package}}/deploy"
+        IMAGE_NAME="${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/hrah/hrah"
 
         docker build \
-          --build-arg NEXT_PUBLIC_SERVER_URI=${{ inputs.server_uri }} \
-          --build-arg NEXT_PUBLIC_VALIDATED_API_KEY=${{ inputs.x-api-key }} \
-          -t $IMAGE_NAME:latest -f apps/${{inputs.package}}/Dockerfile .
+          --build-arg NEXT_PUBLIC_GEMINI_API_KEY=${{ inputs.gemini_api_key }} \
+          -t $IMAGE_NAME:latest -f Dockerfile .
           
         docker push $IMAGE_NAME:latest
       shell: bash
@@ -49,8 +44,8 @@ runs:
     - name: Deploy to Cloud Run
       id: deploy_to_cloud_run
       run: |
-        gcloud run deploy ${{inputs.package}} \
-          --image=${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/monorepo-${{inputs.package}}/deploy:latest \
+        gcloud run deploy hrah \
+          --image=${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/hrah/hrah:latest \
           --region=${{inputs.gcp_region}} \
           --platform=managed \
           --allow-unauthenticated
