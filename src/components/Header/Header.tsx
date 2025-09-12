@@ -12,7 +12,7 @@ const Header = () => {
   };
 
   return (
-    <div className="w-full border-b border-gray-600 px-[24px] py-[16px]">
+    <div className="w-full flex justify-center border-b border-gray-600 px-[24px] py-[16px] md:justify-start">
       <div
         className="w-fit flex items-center cursor-pointer"
         onClick={handleClick}
