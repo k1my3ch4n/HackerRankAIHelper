@@ -23,41 +23,37 @@ export async function GET(request: NextRequest) {
 
     const scrapeData = cheerio.load(htmlContent);
 
-    const productNames: string[] = [];
+    const title = scrapeData('span[itemprop="name"]').last().text();
 
-    scrapeData('span[itemprop="name"]').each((_, element) => {
-      const name = scrapeData(element).text().trim();
-      if (name) {
-        productNames.push(name);
-      }
+    const content = scrapeData('div[class="hackdown-content"]');
+
+    content.find("script, style, link").remove();
+
+    content.find("*").each((_, element) => {
+      scrapeData(element).removeAttr("class");
+      scrapeData(element).removeAttr("id");
+      scrapeData(element).removeAttr("style");
+      scrapeData(element).removeAttr("data-testid");
     });
 
     console.log("Server side HTML content successfully fetched!");
 
-    return new Response(
-      JSON.stringify({
-        message: "Successfully fetched HTML. Check the console.",
-        html: productNames,
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    return NextResponse.json({
+      message: "성공적으로 데이터를 추출했습니다.",
+      title,
+      content: content.html(),
+    });
   } catch (error) {
     console.error("An error occurred during scraping:", error);
 
-    return new Response(
-      JSON.stringify({
-        error: "An error occurred during website scraping.",
-      }),
+    return NextResponse.json(
+      {
+        error: `웹사이트 스크래핑 중 오류가 발생했습니다: ${
+          error instanceof Error ? error.message : "알 수 없는 오류"
+        } `,
+      },
       {
         status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
       }
     );
   }
