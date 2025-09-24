@@ -31,7 +31,7 @@ const HelperPage = () => {
 
   const handleFetchClick = (type: TypeKey) => {
     handleOff();
-    fetchGeminiData({ questionName: questionName, type });
+    fetchGeminiData({ questionName, type });
   };
 
   const isInitialView = prompts.length === 0 && !isLoading;
