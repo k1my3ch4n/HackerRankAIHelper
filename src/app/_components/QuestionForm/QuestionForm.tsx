@@ -2,12 +2,12 @@
 
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
-import useQuestionName from "@/stores/questionName";
+import useQuestionURL from "@/stores/questionURL";
 import { questionInputFilter } from "@/utils/regexUtils";
 import { useState } from "react";
 
 const QuestionForm = ({ handleOff }: { handleOff: () => void }) => {
-  const setQuestionName = useQuestionName((state) => state.setQuestionName);
+  const setQuestionURL = useQuestionURL((state) => state.setQuestionURL);
 
   const [questionInput, setQuestionInput] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -25,15 +25,15 @@ const QuestionForm = ({ handleOff }: { handleOff: () => void }) => {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { isValid, questionName } = questionInputFilter({
+    const { isValid, url } = questionInputFilter({
       questionInput,
     });
 
     if (isValid) {
       handleOff();
-      setQuestionName(questionName);
+      setQuestionURL(url);
 
-      fetchGeminiData({ questionName });
+      fetchGeminiData({ url });
     } else {
       setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
     }

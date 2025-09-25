@@ -10,7 +10,7 @@ import useToggle from "@/hooks/useToggle";
 
 import usePrompts, { TypeKey } from "@/stores/prompts";
 import useIsLoading from "@/stores/isLoading";
-import useQuestionName from "@/stores/questionName";
+import useQuestionURL from "@/stores/questionURL";
 import MarkdownWrapper from "@/components/MarkdownWrapper";
 
 const PROMPT_TYPE: Record<TypeKey, string> = {
@@ -20,7 +20,7 @@ const PROMPT_TYPE: Record<TypeKey, string> = {
 };
 
 const HelperPage = () => {
-  const questionName = useQuestionName((state) => state.questionName);
+  const questionURL = useQuestionURL((state) => state.questionURL);
 
   const prompts = usePrompts((state) => state.prompts);
   const isLoading = useIsLoading((state) => state.isLoading);
@@ -31,7 +31,7 @@ const HelperPage = () => {
 
   const handleFetchClick = (type: TypeKey) => {
     handleOff();
-    fetchGeminiData({ questionName, type });
+    fetchGeminiData({ url: questionURL, type });
   };
 
   const isInitialView = prompts.length === 0 && !isLoading;
