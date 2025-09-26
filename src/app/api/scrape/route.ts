@@ -1,6 +1,9 @@
 import * as cheerio from "cheerio";
 import { NextRequest, NextResponse } from "next/server";
 
+const CACHE_STORE = new Map();
+const TTL = 60 * 5 * 1000;
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const targetUrl = searchParams.get("url");
@@ -12,8 +15,18 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const now = Date.now();
+  const cacheKey = targetUrl;
+  const cachedItem = CACHE_STORE.get(cacheKey);
+
+  if (cachedItem && now - cachedItem.timestamp < TTL) {
+    return NextResponse.json(cachedItem);
+  }
+
   try {
-    const response = await fetch(targetUrl);
+    const response = await fetch(targetUrl, {
+      next: { revalidate: TTL },
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP Error: ${response.status}`);
@@ -23,11 +36,14 @@ export async function GET(request: NextRequest) {
 
     const scrapeData = cheerio.load(htmlContent);
 
+    // 문제 제목
     const title = scrapeData('span[itemprop="name"]').last().text();
 
+    // 문제
     const content = scrapeData('div[class="hackdown-content"]');
 
-    content.find("script, style, link").remove();
+    // todo : svg 임시 삭제 처리
+    content.find("script, style, link, svg").remove();
 
     content.find("*").each((_, element) => {
       scrapeData(element).removeAttr("class");
@@ -36,7 +52,12 @@ export async function GET(request: NextRequest) {
       scrapeData(element).removeAttr("data-testid");
     });
 
-    console.log("Server side HTML content successfully fetched!");
+    CACHE_STORE.set(cacheKey, {
+      message: "성공적으로 데이터를 추출했습니다.",
+      title,
+      content: content.html(),
+      timestamp: now,
+    });
 
     return NextResponse.json({
       message: "성공적으로 데이터를 추출했습니다.",
