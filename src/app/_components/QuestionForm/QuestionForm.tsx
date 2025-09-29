@@ -35,7 +35,7 @@ const QuestionForm = ({ handleOff }: { handleOff: () => void }) => {
 
       fetchGeminiData({ url });
     } else {
-      setErrorMessage("잘못된 URL 또는 잘못된 문제 이름입니다.");
+      setErrorMessage("잘못된 URL 입니다.");
     }
   };
 
@@ -50,7 +50,7 @@ const QuestionForm = ({ handleOff }: { handleOff: () => void }) => {
         <input
           className="w-full text-white focus:outline-hidden "
           value={questionInput}
-          placeholder="문제 URL 또는 문제 이름을 입력하세요."
+          placeholder="문제 URL을 입력하세요."
           onChange={(e) => handleChangeQuestion(e.target.value)}
         />
         <Button className="ml-[10px]" theme="main">
