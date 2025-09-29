@@ -3,15 +3,16 @@
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 
 import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
 
 import usePrompts, { TypeKey } from "@/stores/prompts";
 import useIsLoading from "@/stores/isLoading";
-import useQuestionName from "@/stores/questionName";
+import useQuestionURL from "@/stores/questionURL";
 import MarkdownWrapper from "@/components/MarkdownWrapper";
+import useControlScroll from "@/hooks/useControlScroll";
 
 const PROMPT_TYPE: Record<TypeKey, string> = {
   summary: "요약",
@@ -20,7 +21,9 @@ const PROMPT_TYPE: Record<TypeKey, string> = {
 };
 
 const HelperPage = () => {
-  const questionName = useQuestionName((state) => state.questionName);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const questionURL = useQuestionURL((state) => state.questionURL);
 
   const prompts = usePrompts((state) => state.prompts);
   const isLoading = useIsLoading((state) => state.isLoading);
@@ -29,16 +32,21 @@ const HelperPage = () => {
 
   const { isToggle, handleToggle, handleOff } = useToggle(false);
 
+  useControlScroll(containerRef);
+
   const handleFetchClick = (type: TypeKey) => {
     handleOff();
-    fetchGeminiData({ questionName: questionName, type });
+    fetchGeminiData({ url: questionURL, type });
   };
 
   const isInitialView = prompts.length === 0 && !isLoading;
   const isPrompts = prompts.length > 0;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]">
+    <div
+      className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]"
+      ref={containerRef}
+    >
       {isInitialView && (
         <>
           <p className="text-3xl font-medium md:text-4xl my-[20px] text-center">
