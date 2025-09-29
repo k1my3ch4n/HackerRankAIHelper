@@ -3,7 +3,7 @@
 import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 
 import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
@@ -12,6 +12,7 @@ import usePrompts, { TypeKey } from "@/stores/prompts";
 import useIsLoading from "@/stores/isLoading";
 import useQuestionURL from "@/stores/questionURL";
 import MarkdownWrapper from "@/components/MarkdownWrapper";
+import useControlScroll from "@/hooks/useControlScroll";
 
 const PROMPT_TYPE: Record<TypeKey, string> = {
   summary: "요약",
@@ -20,6 +21,8 @@ const PROMPT_TYPE: Record<TypeKey, string> = {
 };
 
 const HelperPage = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const questionURL = useQuestionURL((state) => state.questionURL);
 
   const prompts = usePrompts((state) => state.prompts);
@@ -28,6 +31,8 @@ const HelperPage = () => {
   const { fetchGeminiData } = useGeminiApi();
 
   const { isToggle, handleToggle, handleOff } = useToggle(false);
+
+  useControlScroll(containerRef);
 
   const handleFetchClick = (type: TypeKey) => {
     handleOff();
@@ -38,7 +43,10 @@ const HelperPage = () => {
   const isPrompts = prompts.length > 0;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]">
+    <div
+      className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]"
+      ref={containerRef}
+    >
       {isInitialView && (
         <>
           <p className="text-3xl font-medium md:text-4xl my-[20px] text-center">
