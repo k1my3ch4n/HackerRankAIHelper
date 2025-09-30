@@ -5,8 +5,9 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]">
       <div className="flex flex-col items-center px-[24px] tracking-wider">
-        <div className="text-5xl md:text-6xl font-semibold p-[24px] text-center">
-          HackerRank AI Helper
+        <div className="md:text-6xl md:flex-row md:justify-center flex flex-col text-5xl font-semibold p-[24px] text-center whitespace-nowrap">
+          <span className="md:pr-[10px]">HackerRank</span>
+          <span>AI Helper</span>
         </div>
         <div className="md:text-3xl md:flex-row md:justify-center md:pb-[10px] md:w-full text-2xl text-gray-500 px-[10px] w-[330px] break-keep flex flex-col">
           <span className="md:pr-[10px]">
