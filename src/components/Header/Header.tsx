@@ -21,14 +21,17 @@ const Header = () => {
 
   return (
     <div className="w-full flex justify-center border-b border-gray-600 px-[24px] py-[16px] md:justify-start">
-      <div className="w-full flex justify-between items-center">
+      <div className="md:justify-between w-full flex justify-center items-center">
         <div className="flex cursor-pointer" onClick={handleHomeButtonClick}>
           <MainLogo />
           <p className="ml-[10px] text-xl font-bold">
             HackerRank <Highlight text="AI" /> Helper
           </p>
         </div>
-        <div className="flex cursor-pointer" onClick={handleGithubButtonClick}>
+        <div
+          className="md:block flex cursor-pointer hidden"
+          onClick={handleGithubButtonClick}
+        >
           <GitHubLogo />
         </div>
       </div>
