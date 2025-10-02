@@ -44,7 +44,7 @@ const HelperPage = () => {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-[calc(100vh-65px)]"
+      className="flex flex-col items-center justify-center min-h-[calc(100vh-73px)]"
       ref={containerRef}
     >
       {isInitialView && (
