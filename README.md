@@ -44,8 +44,6 @@
 - [Github action](https://github.com/features/actions)
 - [Google Cloud Platform](https://cloud.google.com/?hl=ko)
 - [Docker](https://www.docker.com/)
-- [GraphQL](https://graphql.org/)
-- [Apollo Client](https://www.apollographql.com/docs/react/)
 - [GEMINI API](https://ai.google.dev/gemini-api/docs?hl=ko)
 - [Zustand](https://zustand-demo.pmnd.rs/)
 
