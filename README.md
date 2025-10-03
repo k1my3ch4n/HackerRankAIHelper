@@ -6,6 +6,10 @@
    <img src='https://img.shields.io/badge/HRAH-site-skyblue?style=for-the-badge&labelColor=4C566A'>
 </a>
 
+<a href='https://k1my3ch4ns.notion.site/HackerRank-AI-Helper-27ec98c1db058072b298db1e19ccc742' target="_blank">
+   <img src='https://img.shields.io/badge/HRAH-notion-blue?style=for-the-badge&labelColor=4C566A'>
+</a>
+
 <!-- 노션 추가 예정 -->
 
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png" width="100%" alt="rainbow" />
@@ -40,8 +44,6 @@
 - [Github action](https://github.com/features/actions)
 - [Google Cloud Platform](https://cloud.google.com/?hl=ko)
 - [Docker](https://www.docker.com/)
-- [GraphQL](https://graphql.org/)
-- [Apollo Client](https://www.apollographql.com/docs/react/)
 - [GEMINI API](https://ai.google.dev/gemini-api/docs?hl=ko)
 - [Zustand](https://zustand-demo.pmnd.rs/)
 
