@@ -24,7 +24,7 @@ const useGeminiApi = () => {
       const scrapeData = await scrapeResponse.json();
 
       if (!scrapeData) {
-        throw new Error("scrape 데이터 설정");
+        throw new Error("scrape 데이터 설정 에러");
       }
 
       const { title, content } = scrapeData;
