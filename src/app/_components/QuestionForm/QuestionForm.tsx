@@ -58,7 +58,7 @@ const QuestionForm = ({ handleOff }: { handleOff: () => void }) => {
         </Button>
       </div>
       {errorMessage && (
-        <p className="absolute bottom-[-24px] text-red-400">{errorMessage}</p>
+        <p className="absolute bottom-[-30px] text-red-400">{errorMessage}</p>
       )}
     </form>
   );
