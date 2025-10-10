@@ -3,7 +3,7 @@ import NavigateButton from "@/components/NavigateButton";
 
 const Home = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-73px)]">
+    <div className="flex flex-col items-center justify-center mt-[73px] min-h-[calc(100vh-73px)]">
       <div className="flex flex-col items-center px-[24px] tracking-wider">
         <div className="md:text-6xl md:flex-row md:justify-center flex flex-col text-5xl font-semibold p-[24px] text-center whitespace-nowrap">
           <span className="md:pr-[10px]">HackerRank</span>
