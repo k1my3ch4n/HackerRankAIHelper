@@ -3,24 +3,41 @@ import ReactMarkdown, { Components } from "react-markdown";
 const MarkdownWrapper = ({ children }: { children: string }) => {
   const components: Components = {
     h1: ({ children }) => (
-      <h1 className="text-3xl font-bold border-b-3 py-3">{children}</h1>
+      <h1 className="text-3xl font-bold border-b-3 py-3 whitespace-pre-wrap break-all">
+        {children}
+      </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-2xl font-semibold py-3 my-3">{children}</h2>
+      <h2 className="text-2xl font-semibold py-3 my-3 whitespace-pre-wrap break-all">
+        {children}
+      </h2>
     ),
-    p: ({ children }) => <p className="mb-2 leading-7 text-base">{children}</p>,
+    p: ({ children }) => (
+      <p className="mb-2 leading-7 text-base whitespace-pre-wrap break-all">
+        {children}
+      </p>
+    ),
     ul: ({ children, ...props }) => (
-      <ul className="mb-2 ml-5 list-disc list-outside" {...props}>
+      <ul
+        className="mb-2 ml-5 list-disc list-outside whitespace-pre-wrap break-all"
+        {...props}
+      >
         {children}
       </ul>
     ),
     ol: ({ children, ...props }) => (
-      <ol className="mb-2 ml-5 list-decimal list-outside" {...props}>
+      <ol
+        className="mb-2 ml-5 list-decimal list-outside whitespace-pre-wrap break-all"
+        {...props}
+      >
         {children}
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li className=" leading-6 pl-1 py-1" {...props}>
+      <li
+        className=" leading-6 pl-1 py-1 whitespace-pre-wrap break-all"
+        {...props}
+      >
         {children}
       </li>
     ),
@@ -48,7 +65,7 @@ const MarkdownWrapper = ({ children }: { children: string }) => {
 
       return (
         <code
-          className="bg-[#364E2A] text-[#E0FFD1] px-1.5 py-0.5 rounded text-sm font-mono border border-[#90EE90] font-semibold inline whitespace-nowrap"
+          className="bg-[#364E2A] text-[#E0FFD1] px-1.5 py-0.5 rounded text-sm font-mono border border-[#90EE90] font-semibold inline whitespace-pre-wrap break-all"
           {...props}
         >
           {children}
