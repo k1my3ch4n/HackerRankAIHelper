@@ -26,6 +26,7 @@ const NavigateButton = ({
   const handleClick = () => {
     router.push(url);
   };
+
   return (
     <button
       className={`${buttonClassName} ${themeClassName[theme]} ${className}`}

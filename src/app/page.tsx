@@ -1,6 +1,8 @@
 import Highlight from "@/components/Highlight";
 import NavigateButton from "@/components/NavigateButton";
 
+const GITHUB_LINK = "https://github.com/k1my3ch4n/HackerRankAIHelper";
+
 const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center mt-[73px] min-h-[calc(100vh-73px)]">
@@ -34,7 +36,7 @@ const Home = () => {
             className="mr-[10px]"
             text="문제풀러 가기"
           />
-          <NavigateButton url="/" theme="main" text="Github" />
+          <NavigateButton url={GITHUB_LINK} theme="main" text="Github" />
         </div>
       </div>
     </div>
