@@ -2,22 +2,22 @@ import ReactMarkdown, { Components } from "react-markdown";
 
 const MarkdownWrapper = ({ children }: { children: string }) => {
   const components: Components = {
-    h1: ({ children }: { children: React.ReactNode }) => (
+    h1: ({ children }) => (
       <h1 className="text-3xl font-bold border-b-3 py-3 whitespace-pre-wrap break-all">
         {children}
       </h1>
     ),
-    h2: ({ children }: { children: React.ReactNode }) => (
+    h2: ({ children }) => (
       <h2 className="text-2xl font-semibold py-3 my-3 whitespace-pre-wrap break-all">
         {children}
       </h2>
     ),
-    p: ({ children }: { children: React.ReactNode }) => (
+    p: ({ children }) => (
       <p className="mb-2 leading-7 text-base whitespace-pre-wrap break-all">
         {children}
       </p>
     ),
-    ul: ({ children, ...props }: { children: React.ReactNode }) => (
+    ul: ({ children, ...props }) => (
       <ul
         className="mb-2 ml-5 list-disc list-outside whitespace-pre-wrap break-all"
         {...props}
@@ -25,7 +25,7 @@ const MarkdownWrapper = ({ children }: { children: string }) => {
         {children}
       </ul>
     ),
-    ol: ({ children, ...props }: { children: React.ReactNode }) => (
+    ol: ({ children, ...props }) => (
       <ol
         className="mb-2 ml-5 list-decimal list-outside whitespace-pre-wrap break-all"
         {...props}
@@ -33,7 +33,7 @@ const MarkdownWrapper = ({ children }: { children: string }) => {
         {children}
       </ol>
     ),
-    li: ({ children, ...props }: { children: React.ReactNode }) => (
+    li: ({ children, ...props }) => (
       <li
         className=" leading-6 pl-1 py-1 whitespace-pre-wrap break-all"
         {...props}
@@ -41,14 +41,7 @@ const MarkdownWrapper = ({ children }: { children: string }) => {
         {children}
       </li>
     ),
-    code: ({
-      className,
-      children,
-      ...props
-    }: {
-      className: string;
-      children: React.ReactNode;
-    }) => {
+    code: ({ className, children, ...props }) => {
       const match = /language-(\w+)/.exec(className || "");
       const isMultiLine = String(children).includes("\n");
 
