@@ -1,7 +1,6 @@
 import Highlight from "@/components/Highlight";
 import NavigateButton from "@/components/NavigateButton";
-
-const GITHUB_LINK = "https://github.com/k1my3ch4n/HackerRankAIHelper";
+import { GITHUB_URL, HELPER_URL } from "@/constants/urls";
 
 const Home = () => {
   return (
@@ -32,11 +31,11 @@ const Home = () => {
         </div>
         <div className="w-full flex justify-center mt-[36px]">
           <NavigateButton
-            url="/helper"
+            url={HELPER_URL}
             className="mr-[10px]"
             text="문제풀러 가기"
           />
-          <NavigateButton url={GITHUB_LINK} theme="main" text="Github" />
+          <NavigateButton url={GITHUB_URL} theme="main" text="Github" />
         </div>
       </div>
     </div>
