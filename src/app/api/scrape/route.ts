@@ -1,7 +1,12 @@
 import * as cheerio from "cheerio";
 import { NextRequest, NextResponse } from "next/server";
+import type { ScrapeSuccessResponse } from "@/types";
 
-const CACHE_STORE = new Map();
+interface CacheData extends ScrapeSuccessResponse {
+  timestamp: number;
+}
+
+const CACHE_STORE = new Map<string, CacheData>();
 const TTL = 60 * 5 * 1000;
 
 export async function GET(request: NextRequest) {

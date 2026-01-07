@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { PromptType } from "@/types";
+import type { PromptType, GeminiSuccessResponse } from "@/types";
 
 const API_KEY = process.env.GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-interface RequestBody {
+interface GeminiRequestBody {
   type: PromptType;
   title: string;
   content: string;
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body: RequestBody = await request.json();
+    const body: GeminiRequestBody = await request.json();
     const { type, title, content } = body;
 
     if (!type || !title || !content) {
@@ -117,9 +117,9 @@ export async function POST(request: NextRequest) {
       throw new Error("Gemini 응답을 받지 못했습니다.");
     }
 
-    const parsedResponse = JSON.parse(geminiResponse);
+    const parsedResponse: GeminiSuccessResponse = JSON.parse(geminiResponse);
 
-    return NextResponse.json({
+    return NextResponse.json<GeminiSuccessResponse>({
       summary: parsedResponse.summary,
     });
   } catch (error) {

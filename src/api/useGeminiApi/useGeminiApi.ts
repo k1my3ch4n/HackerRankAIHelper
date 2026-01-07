@@ -3,7 +3,12 @@
 import useError from "@/stores/error";
 import useIsLoading from "@/stores/isLoading";
 import usePrompts from "@/stores/prompts";
-import type { PromptType } from "@/types";
+import type {
+  PromptType,
+  ScrapeSuccessResponse,
+  GeminiSuccessResponse,
+  ApiErrorResponse,
+} from "@/types";
 
 const useGeminiApi = () => {
   const setIsLoading = useIsLoading((state) => state.setIsLoading);
@@ -26,13 +31,13 @@ const useGeminiApi = () => {
       );
 
       if (!scrapeResponse.ok) {
-        const scrapeError = await scrapeResponse.json();
+        const scrapeError: ApiErrorResponse = await scrapeResponse.json();
         throw new Error(
           scrapeError.error || "문제 페이지를 불러오는데 실패했습니다."
         );
       }
 
-      const scrapeData = await scrapeResponse.json();
+      const scrapeData: ScrapeSuccessResponse = await scrapeResponse.json();
 
       if (!scrapeData || !scrapeData.title || !scrapeData.content) {
         throw new Error("문제 데이터를 추출하지 못했습니다.");
@@ -47,11 +52,11 @@ const useGeminiApi = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData: ApiErrorResponse = await response.json();
         throw new Error(errorData.error || "AI 응답을 받는데 실패했습니다.");
       }
 
-      const result = await response.json();
+      const result: GeminiSuccessResponse = await response.json();
 
       if (!result.summary) {
         throw new Error("AI 응답이 비어있습니다.");
