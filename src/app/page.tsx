@@ -30,12 +30,12 @@ const Home = () => {
           </span>
         </div>
         <div className="w-full flex justify-center mt-[36px]">
-          <NavigateButton
-            url={HELPER_URL}
-            className="mr-[10px]"
-            text="문제풀러 가기"
-          />
-          <NavigateButton url={GITHUB_URL} theme="main" text="Github" />
+          <NavigateButton url={HELPER_URL} className="mr-[10px]">
+            문제풀러 가기
+          </NavigateButton>
+          <NavigateButton url={GITHUB_URL} theme="main">
+            Github
+          </NavigateButton>
         </div>
       </div>
     </div>
