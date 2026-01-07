@@ -386,53 +386,7 @@ const result: GeminiSuccessResponse = await response.json();
 
 ---
 
-## 6. Standalone 모드 비활성화
-
-### 문제점
-
-Windows 환경에서 `output: "standalone"` 설정 시 빌드 에러가 발생했습니다.
-
-```
-Error: EPERM: operation not permitted, symlink
-'...\node_modules\next' -> '...\.next\standalone\node_modules\next'
-```
-
-Windows에서 symlink 생성에 관리자 권한이 필요하여 빌드가 실패했습니다.
-
-### 해결 방법
-
-로컬 개발 환경에서는 standalone 모드를 비활성화합니다.
-
-**`next.config.ts`**
-```typescript
-// Before
-const nextConfig: NextConfig = {
-  // ...
-  output: "standalone",
-};
-
-// After
-const nextConfig: NextConfig = {
-  // ...
-  // output: "standalone",  // 제거
-};
-```
-
-### 변경된 파일
-
-| 파일 | 변경 내용 |
-|------|----------|
-| `next.config.ts` | `output: "standalone"` 제거 |
-
-### 참고
-
-- Docker 배포 시에는 standalone 모드가 필요할 수 있음
-- 배포 환경(Linux)에서는 symlink 문제 없음
-- CI/CD 파이프라인에서 standalone 모드 사용 가능
-
----
-
-## 7. Prettier 설정 추가
+## 6. Prettier 설정 추가
 
 ### 문제점
 
@@ -499,7 +453,7 @@ pnpm format:check  # 포맷팅 체크만
 
 ---
 
-## 8. 테마 시스템 중복 제거
+## 7. 테마 시스템 중복 제거
 
 ### 문제점
 
@@ -581,7 +535,7 @@ const NavigateButton = ({ url, theme, children }: NavigateButtonProps) => {
 
 ---
 
-## 9. 상태 초기화 메서드 추가
+## 8. 상태 초기화 메서드 추가
 
 ### 문제점
 
