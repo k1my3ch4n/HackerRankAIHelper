@@ -3,6 +3,7 @@
 import useError from "@/stores/error";
 import useIsLoading from "@/stores/isLoading";
 import usePrompts from "@/stores/prompts";
+import type { PromptType } from "@/types";
 
 const useGeminiApi = () => {
   const setIsLoading = useIsLoading((state) => state.setIsLoading);
@@ -14,7 +15,7 @@ const useGeminiApi = () => {
     type = "summary",
   }: {
     url: string;
-    type?: "summary" | "hint" | "answer";
+    type?: PromptType;
   }) => {
     setIsLoading(true);
     clearError();

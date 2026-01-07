@@ -1,16 +1,9 @@
 import { create } from "zustand";
-
-export type TypeKey = "summary" | "hint" | "answer";
-
-interface PromptDataType {
-  type: TypeKey;
-  url: string;
-  summary: string;
-}
+import type { PromptData } from "@/types";
 
 interface PromptsState {
-  prompts: PromptDataType[];
-  setPrompts: (newPrompt: PromptDataType) => void;
+  prompts: PromptData[];
+  setPrompts: (newPrompt: PromptData) => void;
 }
 
 const usePrompts = create<PromptsState>((set) => ({

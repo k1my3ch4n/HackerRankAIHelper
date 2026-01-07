@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { PromptType } from "@/types";
 
 const API_KEY = process.env.GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
-
-type PromptType = "summary" | "hint" | "answer";
 
 interface RequestBody {
   type: PromptType;

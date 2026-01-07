@@ -8,14 +8,15 @@ import { Fragment, useRef } from "react";
 import QuestionForm from "../_components/QuestionForm";
 import useToggle from "@/hooks/useToggle";
 
-import usePrompts, { TypeKey } from "@/stores/prompts";
+import usePrompts from "@/stores/prompts";
+import type { PromptType } from "@/types";
 import useIsLoading from "@/stores/isLoading";
 import useQuestionURL from "@/stores/questionURL";
 import useError from "@/stores/error";
 import MarkdownWrapper from "@/components/MarkdownWrapper";
 import useControlScroll from "@/hooks/useControlScroll";
 
-const PROMPT_TYPE: Record<TypeKey, string> = {
+const PROMPT_TYPE: Record<PromptType, string> = {
   summary: "요약",
   hint: "힌트",
   answer: "풀이",
@@ -36,7 +37,7 @@ const HelperPage = () => {
 
   useControlScroll(containerRef);
 
-  const handleFetchClick = (type: TypeKey) => {
+  const handleFetchClick = (type: PromptType) => {
     handleOff();
     fetchGeminiData({ url: questionURL, type });
   };
@@ -75,7 +76,7 @@ const HelperPage = () => {
                               key={key}
                               className="grow mr-[10px] last:mr-0 md:last:mr-[10px]"
                               theme="white"
-                              onClick={() => handleFetchClick(key as TypeKey)}
+                              onClick={() => handleFetchClick(key as PromptType)}
                             >
                               {key === type ? "다른 " : ""}
                               {value}
