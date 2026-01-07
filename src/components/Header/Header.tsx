@@ -4,9 +4,7 @@ import MainLogo from "@/images/main_logo.svg";
 import GitHubLogo from "@/images/github.svg";
 import Highlight from "@/components/Highlight";
 import { useRouter } from "next/navigation";
-
-const GITHUB_URL = "https://github.com/k1my3ch4n/HackerRankAIHelper";
-const HOME_URL = "/";
+import { GITHUB_URL, HOME_URL } from "@/constants/urls";
 
 const Header = () => {
   const router = useRouter();

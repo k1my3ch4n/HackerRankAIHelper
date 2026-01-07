@@ -12,7 +12,7 @@ on:
       - synchronize
 
 env:
-  NEXT_PUBLIC_GEMINI_API_KEY: ${{secrets.NEXT_PUBLIC_GEMINI_API_KEY}}
+  GEMINI_API_KEY: ${{secrets.GEMINI_API_KEY}}
 
 jobs:
   integration:
