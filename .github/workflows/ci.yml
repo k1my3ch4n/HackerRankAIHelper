@@ -11,9 +11,6 @@ on:
       - labeled
       - synchronize
 
-env:
-  GEMINI_API_KEY: ${{secrets.GEMINI_API_KEY}}
-
 jobs:
   integration:
     name: integration
