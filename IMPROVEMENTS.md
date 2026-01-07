@@ -386,53 +386,7 @@ const result: GeminiSuccessResponse = await response.json();
 
 ---
 
-## 6. Standalone 모드 비활성화
-
-### 문제점
-
-Windows 환경에서 `output: "standalone"` 설정 시 빌드 에러가 발생했습니다.
-
-```
-Error: EPERM: operation not permitted, symlink
-'...\node_modules\next' -> '...\.next\standalone\node_modules\next'
-```
-
-Windows에서 symlink 생성에 관리자 권한이 필요하여 빌드가 실패했습니다.
-
-### 해결 방법
-
-로컬 개발 환경에서는 standalone 모드를 비활성화합니다.
-
-**`next.config.ts`**
-```typescript
-// Before
-const nextConfig: NextConfig = {
-  // ...
-  output: "standalone",
-};
-
-// After
-const nextConfig: NextConfig = {
-  // ...
-  // output: "standalone",  // 제거
-};
-```
-
-### 변경된 파일
-
-| 파일 | 변경 내용 |
-|------|----------|
-| `next.config.ts` | `output: "standalone"` 제거 |
-
-### 참고
-
-- Docker 배포 시에는 standalone 모드가 필요할 수 있음
-- 배포 환경(Linux)에서는 symlink 문제 없음
-- CI/CD 파이프라인에서 standalone 모드 사용 가능
-
----
-
-## 7. Prettier 설정 추가
+## 6. Prettier 설정 추가
 
 ### 문제점
 
@@ -499,7 +453,7 @@ pnpm format:check  # 포맷팅 체크만
 
 ---
 
-## 8. 테마 시스템 중복 제거
+## 7. 테마 시스템 중복 제거
 
 ### 문제점
 
@@ -581,7 +535,7 @@ const NavigateButton = ({ url, theme, children }: NavigateButtonProps) => {
 
 ---
 
-## 9. 상태 초기화 메서드 추가
+## 8. 상태 초기화 메서드 추가
 
 ### 문제점
 
@@ -622,6 +576,91 @@ const { clearQuestionURL } = useQuestionURL();
 // 새 세션 시작 시
 clearPrompts();
 clearQuestionURL();
+```
+
+---
+
+## 9. CI/CD 및 Docker 보안 강화
+
+### 문제점
+
+Docker 빌드 시 API 키가 `--build-arg`로 전달되어 이미지 레이어에 노출되는 보안 문제가 있었습니다.
+
+```yaml
+# Before: 보안 취약
+docker build --build-arg GEMINI_API_KEY=${{ inputs.gemini_api_key }} ...
+```
+
+Docker 빌드 시 다음 경고가 발생했습니다:
+```
+SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data
+```
+
+### 해결 방법
+
+API 키를 빌드 시점이 아닌 런타임에 환경변수로 전달하도록 변경했습니다.
+
+#### 9.1 Dockerfile 수정
+
+```dockerfile
+# Before
+ARG GEMINI_API_KEY
+ENV GEMINI_API_KEY=${GEMINI_API_KEY}
+# ... 빌드 ...
+
+# After
+# ARG/ENV 제거 - 빌드 시 API 키 불필요
+# ... 빌드 ...
+# 런타임에 환경변수로 전달
+```
+
+#### 9.2 CI/CD 워크플로우 수정
+
+**`ci.yml`** - 빌드 테스트에서 API 키 환경변수 제거
+```yaml
+# Before
+env:
+  GEMINI_API_KEY: ${{secrets.GEMINI_API_KEY}}
+
+# After
+# env 섹션 제거 (빌드에 불필요)
+```
+
+**`cd.yml`** - 동일하게 env 섹션 제거
+
+**`auto_deploy/action.yml`** - 런타임 환경변수로 변경
+```yaml
+# Before: 빌드 시 ARG로 전달
+docker build --build-arg GEMINI_API_KEY=${{ inputs.gemini_api_key }} ...
+gcloud run deploy ...
+
+# After: 런타임에 환경변수로 전달
+docker build ...
+gcloud run deploy ... --set-env-vars=GEMINI_API_KEY=${{ inputs.gemini_api_key }}
+```
+
+### 변경된 파일
+
+| 파일 | 변경 내용 |
+|------|----------|
+| `Dockerfile` | `ARG`, `ENV GEMINI_API_KEY` 제거 |
+| `.github/workflows/ci.yml` | `env: GEMINI_API_KEY` 제거 |
+| `.github/workflows/cd.yml` | `env: GEMINI_API_KEY` 제거 |
+| `.github/actions/auto_deploy/action.yml` | `--build-arg` 제거, `--set-env-vars` 추가 |
+
+### 장점
+
+- **보안 강화**: API 키가 Docker 이미지에 포함되지 않음
+- **이미지 재사용**: 동일 이미지를 다른 환경에서 다른 API 키로 사용 가능
+- **Docker 경고 해결**: `SecretsUsedInArgOrEnv` 경고 제거
+
+### Docker 실행 방법
+
+```bash
+# 로컬 실행
+docker run -p 3000:3000 -e GEMINI_API_KEY=your_api_key image_name
+
+# Cloud Run은 --set-env-vars로 자동 설정됨
 ```
 
 ---
