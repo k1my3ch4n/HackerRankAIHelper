@@ -580,6 +580,91 @@ clearQuestionURL();
 
 ---
 
+## 9. CI/CD 및 Docker 보안 강화
+
+### 문제점
+
+Docker 빌드 시 API 키가 `--build-arg`로 전달되어 이미지 레이어에 노출되는 보안 문제가 있었습니다.
+
+```yaml
+# Before: 보안 취약
+docker build --build-arg GEMINI_API_KEY=${{ inputs.gemini_api_key }} ...
+```
+
+Docker 빌드 시 다음 경고가 발생했습니다:
+```
+SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data
+```
+
+### 해결 방법
+
+API 키를 빌드 시점이 아닌 런타임에 환경변수로 전달하도록 변경했습니다.
+
+#### 9.1 Dockerfile 수정
+
+```dockerfile
+# Before
+ARG GEMINI_API_KEY
+ENV GEMINI_API_KEY=${GEMINI_API_KEY}
+# ... 빌드 ...
+
+# After
+# ARG/ENV 제거 - 빌드 시 API 키 불필요
+# ... 빌드 ...
+# 런타임에 환경변수로 전달
+```
+
+#### 9.2 CI/CD 워크플로우 수정
+
+**`ci.yml`** - 빌드 테스트에서 API 키 환경변수 제거
+```yaml
+# Before
+env:
+  GEMINI_API_KEY: ${{secrets.GEMINI_API_KEY}}
+
+# After
+# env 섹션 제거 (빌드에 불필요)
+```
+
+**`cd.yml`** - 동일하게 env 섹션 제거
+
+**`auto_deploy/action.yml`** - 런타임 환경변수로 변경
+```yaml
+# Before: 빌드 시 ARG로 전달
+docker build --build-arg GEMINI_API_KEY=${{ inputs.gemini_api_key }} ...
+gcloud run deploy ...
+
+# After: 런타임에 환경변수로 전달
+docker build ...
+gcloud run deploy ... --set-env-vars=GEMINI_API_KEY=${{ inputs.gemini_api_key }}
+```
+
+### 변경된 파일
+
+| 파일 | 변경 내용 |
+|------|----------|
+| `Dockerfile` | `ARG`, `ENV GEMINI_API_KEY` 제거 |
+| `.github/workflows/ci.yml` | `env: GEMINI_API_KEY` 제거 |
+| `.github/workflows/cd.yml` | `env: GEMINI_API_KEY` 제거 |
+| `.github/actions/auto_deploy/action.yml` | `--build-arg` 제거, `--set-env-vars` 추가 |
+
+### 장점
+
+- **보안 강화**: API 키가 Docker 이미지에 포함되지 않음
+- **이미지 재사용**: 동일 이미지를 다른 환경에서 다른 API 키로 사용 가능
+- **Docker 경고 해결**: `SecretsUsedInArgOrEnv` 경고 제거
+
+### Docker 실행 방법
+
+```bash
+# 로컬 실행
+docker run -p 3000:3000 -e GEMINI_API_KEY=your_api_key image_name
+
+# Cloud Run은 --set-env-vars로 자동 설정됨
+```
+
+---
+
 ## 미완료 개선 사항
 
 분석 결과 확인된 추가 개선 가능 항목들입니다.
