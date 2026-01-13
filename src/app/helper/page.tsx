@@ -1,6 +1,6 @@
 "use client";
 
-import useFetchGemini from "@/api/useFetchGemini";
+import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
 import { Fragment, useRef } from "react";
@@ -31,7 +31,7 @@ const HelperPage = () => {
   const isLoading = useIsLoading((state) => state.isLoading);
   const { error, clearError } = useError();
 
-  const { fetchGeminiData } = useFetchGemini();
+  const { fetchGeminiData } = useGeminiApi();
 
   const { isToggle, handleToggle, handleOff } = useToggle(false);
 

@@ -80,14 +80,14 @@ After (보안 강화):
 
 ### 변경된 파일
 
-| 파일                                       | 변경 내용                              |
-| ------------------------------------------ | -------------------------------------- |
-| `src/app/api/gemini/route.ts`              | 새로 생성 - 서버 사이드 API 엔드포인트 |
-| `src/api/useFetchGemini/useFetchGemini.ts` | `/api/gemini` 호출로 변경              |
-| `.github/workflows/ci.yml`                 | 환경변수명 변경                        |
-| `.github/workflows/cd.yml`                 | 환경변수명 변경                        |
-| `.github/actions/auto_deploy/action.yml`   | build-arg 이름 변경                    |
-| `Dockerfile`                               | ARG/ENV 이름 변경                      |
+| 파일                                     | 변경 내용                              |
+| ---------------------------------------- | -------------------------------------- |
+| `src/app/api/gemini/route.ts`            | 새로 생성 - 서버 사이드 API 엔드포인트 |
+| `src/api/useGeminiApi/useGeminiApi.ts`   | `/api/gemini` 호출로 변경              |
+| `.github/workflows/ci.yml`               | 환경변수명 변경                        |
+| `.github/workflows/cd.yml`               | 환경변수명 변경                        |
+| `.github/actions/auto_deploy/action.yml` | build-arg 이름 변경                    |
+| `Dockerfile`                             | ARG/ENV 이름 변경                      |
 
 ### 환경변수 변경
 
@@ -112,7 +112,7 @@ NEXT_PUBLIC_GEMINI_API_KEY -> GEMINI_API_KEY
 
 ### 문제점
 
-1. **useFetchGemini에서 에러 발생 시 사용자에게 피드백이 없음**
+1. **useGeminiApi에서 에러 발생 시 사용자에게 피드백이 없음**
 
 ```typescript
 // Before
@@ -162,9 +162,9 @@ const useError = create<ErrorState>((set) => ({
 export default useError;
 ```
 
-#### 3.2 useFetchGemini 개선
+#### 3.2 useGeminiApi 개선
 
-**`src/api/useFetchGemini/useFetchGemini.ts`**
+**`src/api/useGeminiApi/useGeminiApi.ts`**
 
 | 개선 항목            | 설명                              |
 | -------------------- | --------------------------------- |
@@ -259,12 +259,12 @@ const fetchGeminiData = async ({ url, type = "summary" }) => {
 
 ### 변경된 파일
 
-| 파일                                       | 변경 내용                        |
-| ------------------------------------------ | -------------------------------- |
-| `src/stores/error/error.ts`                | 새로 생성 - 에러 상태 관리 store |
-| `src/stores/error/index.ts`                | 새로 생성 - export 파일          |
-| `src/api/useFetchGemini/useFetchGemini.ts` | 에러 핸들링 로직 추가            |
-| `src/app/helper/page.tsx`                  | 에러 메시지 UI 추가              |
+| 파일                                   | 변경 내용                        |
+| -------------------------------------- | -------------------------------- |
+| `src/stores/error/error.ts`            | 새로 생성 - 에러 상태 관리 store |
+| `src/stores/error/index.ts`            | 새로 생성 - export 파일          |
+| `src/api/useGeminiApi/useGeminiApi.ts` | 에러 핸들링 로직 추가            |
+| `src/app/helper/page.tsx`              | 에러 메시지 UI 추가              |
 
 ---
 
@@ -281,7 +281,7 @@ type PromptType = "summary" | "hint" | "answer";
 // src/stores/prompts/prompts.ts
 export type TypeKey = "summary" | "hint" | "answer";
 
-// src/api/useFetchGemini/useFetchGemini.ts
+// src/api/useGeminiApi/useGeminiApi.ts
 type?: "summary" | "hint" | "answer";  // 인라인 정의
 ```
 
@@ -321,15 +321,15 @@ import type { PromptType } from "@/types";
 
 ### 변경된 파일
 
-| 파일                                       | 변경 내용                                                 |
-| ------------------------------------------ | --------------------------------------------------------- |
-| `src/types/prompt.ts`                      | 새로 생성 - 공통 타입 정의                                |
-| `src/types/index.ts`                       | 새로 생성 - export 파일                                   |
-| `src/app/api/gemini/route.ts`              | 공통 타입 import                                          |
-| `src/stores/prompts/prompts.ts`            | `TypeKey` → `PromptType`, `PromptDataType` → `PromptData` |
-| `src/stores/prompts/index.ts`              | `TypeKey` re-export 제거                                  |
-| `src/app/helper/page.tsx`                  | `TypeKey` → `PromptType`                                  |
-| `src/api/useFetchGemini/useFetchGemini.ts` | 공통 타입 import                                          |
+| 파일                                   | 변경 내용                                                 |
+| -------------------------------------- | --------------------------------------------------------- |
+| `src/types/prompt.ts`                  | 새로 생성 - 공통 타입 정의                                |
+| `src/types/index.ts`                   | 새로 생성 - export 파일                                   |
+| `src/app/api/gemini/route.ts`          | 공통 타입 import                                          |
+| `src/stores/prompts/prompts.ts`        | `TypeKey` → `PromptType`, `PromptDataType` → `PromptData` |
+| `src/stores/prompts/index.ts`          | `TypeKey` re-export 제거                                  |
+| `src/app/helper/page.tsx`              | `TypeKey` → `PromptType`                                  |
+| `src/api/useGeminiApi/useGeminiApi.ts` | 공통 타입 import                                          |
 
 ### 장점
 
@@ -387,13 +387,13 @@ const result: GeminiSuccessResponse = await response.json();
 
 ### 변경된 파일
 
-| 파일                                       | 변경 내용                                |
-| ------------------------------------------ | ---------------------------------------- |
-| `src/types/api.ts`                         | 새로 생성 - API 응답 타입 정의           |
-| `src/types/index.ts`                       | API 타입 export 추가                     |
-| `src/api/useFetchGemini/useFetchGemini.ts` | API 응답에 타입 적용                     |
-| `src/app/api/scrape/route.ts`              | 캐시 타입 정의, `Map<string, CacheData>` |
-| `src/app/api/gemini/route.ts`              | 요청/응답 타입 적용                      |
+| 파일                                   | 변경 내용                                |
+| -------------------------------------- | ---------------------------------------- |
+| `src/types/api.ts`                     | 새로 생성 - API 응답 타입 정의           |
+| `src/types/index.ts`                   | API 타입 export 추가                     |
+| `src/api/useGeminiApi/useGeminiApi.ts` | API 응답에 타입 적용                     |
+| `src/app/api/scrape/route.ts`          | 캐시 타입 정의, `Map<string, CacheData>` |
+| `src/app/api/gemini/route.ts`          | 요청/응답 타입 적용                      |
 
 ### 장점
 
