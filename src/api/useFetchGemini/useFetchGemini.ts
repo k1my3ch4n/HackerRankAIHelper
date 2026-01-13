@@ -10,7 +10,7 @@ import type {
   ApiErrorResponse,
 } from "@/types";
 
-const useGeminiApi = () => {
+const useFetchGemini = () => {
   const setIsLoading = useIsLoading((state) => state.setIsLoading);
   const setPrompts = usePrompts((state) => state.setPrompts);
   const { setError, clearError } = useError();
@@ -71,7 +71,9 @@ const useGeminiApi = () => {
       setPrompts(newPrompt);
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다.";
       setError(errorMessage);
       console.error("Gemini API 호출 중 오류:", error);
     } finally {
@@ -82,4 +84,4 @@ const useGeminiApi = () => {
   return { fetchGeminiData };
 };
 
-export default useGeminiApi;
+export default useFetchGemini;

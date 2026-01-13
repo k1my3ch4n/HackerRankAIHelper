@@ -1,6 +1,6 @@
 "use client";
 
-import useGeminiApi from "@/api/useGeminiApi";
+import useFetchGemini from "@/api/useFetchGemini";
 import Button from "@/components/Button";
 import Highlight from "@/components/Highlight";
 import { Fragment, useRef } from "react";
@@ -31,7 +31,7 @@ const HelperPage = () => {
   const isLoading = useIsLoading((state) => state.isLoading);
   const { error, clearError } = useError();
 
-  const { fetchGeminiData } = useGeminiApi();
+  const { fetchGeminiData } = useFetchGemini();
 
   const { isToggle, handleToggle, handleOff } = useToggle(false);
 
@@ -76,7 +76,9 @@ const HelperPage = () => {
                               key={key}
                               className="grow mr-[10px] last:mr-0 md:last:mr-[10px]"
                               theme="white"
-                              onClick={() => handleFetchClick(key as PromptType)}
+                              onClick={() =>
+                                handleFetchClick(key as PromptType)
+                              }
                             >
                               {key === type ? "다른 " : ""}
                               {value}
