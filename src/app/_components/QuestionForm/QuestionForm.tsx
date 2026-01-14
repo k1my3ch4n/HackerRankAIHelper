@@ -1,6 +1,6 @@
 "use client";
 
-import useFetchGemini from "@/api/useFetchGemini";
+import useGeminiApi from "@/api/useGeminiApi";
 import Button from "@/components/Button";
 import useQuestionURL from "@/stores/questionURL";
 import { questionInputFilter } from "@/utils/regexUtils";
@@ -12,7 +12,7 @@ const QuestionForm = ({ handleOff }: { handleOff: () => void }) => {
   const [questionInput, setQuestionInput] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const { fetchGeminiData } = useFetchGemini();
+  const { fetchGeminiData } = useGeminiApi();
 
   const handleChangeQuestion = (value: string) => {
     if (errorMessage) {

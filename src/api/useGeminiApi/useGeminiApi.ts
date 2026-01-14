@@ -10,7 +10,7 @@ import type {
   ApiErrorResponse,
 } from "@/types";
 
-const useFetchGemini = () => {
+const useGeminiApi = () => {
   const setIsLoading = useIsLoading((state) => state.setIsLoading);
   const setPrompts = usePrompts((state) => state.setPrompts);
   const { setError, clearError } = useError();
@@ -84,4 +84,4 @@ const useFetchGemini = () => {
   return { fetchGeminiData };
 };
 
-export default useFetchGemini;
+export default useGeminiApi;
